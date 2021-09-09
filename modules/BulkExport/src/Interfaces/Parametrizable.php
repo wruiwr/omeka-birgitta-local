@@ -1,0 +1,27 @@
+<?php
+namespace BulkExport\Interfaces;
+
+use Zend\Form\Form;
+
+interface Parametrizable
+{
+    /**
+     * @param array|\Traversable $config
+     */
+    public function setParams($params);
+
+    /**
+     * @return array|\Traversable
+     */
+    public function getParams();
+
+    /**
+     * @return string
+     */
+    public function getParamsFormClass();
+
+    /**
+     * @param Form $form
+     */
+    public function handleParamsForm(Form $form);
+}
