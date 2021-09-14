@@ -1,0 +1,9 @@
+[submodule "themes/revision"]
+	path = themes/revision
+	url = git@git.app.uib.no:revision/theme.git
+[submodule "modules/EasyInstall"]
+	path = modules/EasyInstall
+	url = https://github.com/Daniel-KM/Omeka-S-module-EasyInstall.git
+[submodule "modules/Scripto-1.3.0"]
+	path = modules/Scripto-1.3.0
+	url = https://github.com/omeka-s-modules/Scripto.git

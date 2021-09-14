@@ -1,18 +1,19 @@
-version: "3.8"
+version: "2"
 
 services:
   mariadb:
     image: mariadb:latest
+    container_name: db
     restart: always
     networks:
-      - birgitta-network
+      - network_birgitta
     volumes:
-      - mariadb:/var/lib/mysql
+      - mariadb_birgitta:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: omekadb2
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: rootpswd
+      MYSQL_DATABASE: omeka
+      MYSQL_USER: omeka
+      MYSQL_PASSWORD: omeka
 
   pma:
     depends_on:
@@ -20,9 +21,9 @@ services:
     image: phpmyadmin/phpmyadmin:latest
     restart: always
     networks:
-      - birgitta-network
+      - network_birgitta
     ports:
-      - "3000:30"
+      - "8080:80"
     links:
       - mariadb:db
 
@@ -32,17 +33,17 @@ services:
     image: wruiwr/omeka-s-birgitta:latest
     restart: always
     networks:
-      - birgitta-network
+      - network_birgitta
     ports:
-      - "30:30"
+      - "80:80"
     links:
       - mariadb:db
     volumes:
-      - omeka-birgitta:/var/www/html/volume
+      - birgitta:/var/www/html/volume
 
 volumes:
-  mariadb:
-  omeka-birgitta:
+  mariadb_birgitta:
+  birgitta:
 
 networks:
-  birgitta-network:
+  network_birgitta:
