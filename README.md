@@ -13,12 +13,12 @@ git submodule update
 ## To use it with MEMP Pro
 1. clone the repo.
 2. in MEMP, choose localhost and change its Document Root (under General tab) to cloned repo directoy.
-4. Under the Databases tap, create a database called "omeka". This database name is defined in **config/database.ini**. The user name and password of the database "omeka" is also defined in **config/database.ini**
-5. import database:
+3. under the Databases tap, create a database called "omeka". This database name is defined in **config/database.ini**. The user name and password of the database "omeka" is also defined in **config/database.ini**
+4. import database:
 ```
 /Applications/MAMP/library/bin/mysql -uomeka -pomeka omeka < birgitta.mysqldump-new.sql
 ```
-7. Click start and open localhost.
+5. Click start and open localhost.
 
 ## To use it with docker containers
 1. Launch the containers:
@@ -29,8 +29,10 @@ docker-compose up -d
 This will deploy three Docker containers:
 
 Container 1: mariadb (mysql)
+
 Container 2: phpmyadmin (connected to container 1)
-Container 3: omeka-s (connected to container 1)
+
+Container 3: omeka-s-birgitta (connected to container 1)
 
 2. import database:
 
@@ -48,3 +50,31 @@ docker exec -i <databse-container-ID> mysql -uomeka -pomeka omeka < birgitta.mys
 ```
 docker-compose down
 ```
+
+## Build your birgitta image (optional)
+If you want to modify and build the omeka birgitta image, you will need to build a new image:
+
+eg:
+```
+docker image build -t foo/omeka-s-birgitta:1.0.1 .
+```
+```
+docker image tag foo/omeka-s-birgitta:1.0.1 foo/omeka-s-birgitta:latest
+```
+
+Upload your image to your Docker hub repository:
+
+Login in your account (e.g. foo) on hub.docker.com, and create a repository "omeka-s-birgitta", then upload your customized image:
+
+```
+docker login --username=foo
+```
+```
+docker image push foo/omeka-s-birgitta:1.0.1
+```
+```
+docker image push foo/omeka-s-birgitta:latest
+```
+
+
+
