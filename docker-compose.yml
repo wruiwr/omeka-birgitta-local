@@ -1,0 +1,48 @@
+version: "3.8"
+
+services:
+  mariadb:
+    image: mariadb:latest
+    restart: always
+    networks:
+      - birgitta-network
+    volumes:
+      - mariadb:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: omekadb2
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+
+  pma:
+    depends_on:
+      - mariadb
+    image: phpmyadmin/phpmyadmin:latest
+    restart: always
+    networks:
+      - birgitta-network
+    ports:
+      - "3000:30"
+    links:
+      - mariadb:db
+
+  omeka:
+    depends_on:
+      - mariadb
+    image: wruiwr/omeka-s-birgitta:latest
+    restart: always
+    networks:
+      - birgitta-network
+    ports:
+      - "30:30"
+    links:
+      - mariadb:db
+    volumes:
+      - omeka-birgitta:/var/www/html/volume
+
+volumes:
+  mariadb:
+  omeka-birgitta:
+
+networks:
+  birgitta-network:
