@@ -1,3 +1,6 @@
 [submodule "themes/revision"]
 	path = themes/revision
 	url = git@git.app.uib.no:revision/theme.git
+[submodule "modules/EasyInstall"]
+	path = modules/EasyInstall
+	url = https://github.com/Daniel-KM/Omeka-S-module-EasyInstall.git
