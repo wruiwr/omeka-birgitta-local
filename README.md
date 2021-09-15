@@ -35,9 +35,10 @@ Container 2: phpmyadmin (connected to container 1)
 Container 3: omeka-s-birgitta (connected to container 1)
 
 2. import database:
+Eg:
 
 ```
-docker exec -i <databse-container-ID> mysql -uomeka -pomeka omeka < birgitta.mysqldump-new.sql
+docker exec -i <databse-container-ID> mysql -uomeka -pomeka omeka < birgitta.mysqldump.sql
 ```
 
 3. With your browser, go to:
@@ -49,6 +50,15 @@ docker exec -i <databse-container-ID> mysql -uomeka -pomeka omeka < birgitta.mys
 4. Stop containers:
 ```
 docker-compose down
+```
+
+5. Stop containers and remove all images and volumes 
+```
+docker-compose down --rmi all
+```
+and 
+```
+docker volume prune
 ```
 
 ## Build your birgitta image (optional)
