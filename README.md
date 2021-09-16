@@ -35,10 +35,11 @@ Container 2: phpmyadmin (connected to container 1)
 Container 3: omeka-s-birgitta (connected to container 1)
 
 2. import database:
+
 Eg:
 
 ```
-docker exec -i <databse-container-ID> mysql -uomeka -pomeka omeka < birgitta.mysqldump.sql
+docker exec -i <database-container-ID> mysql -uomeka -pomeka omeka < birgitta.mysqldump.sql
 ```
 
 3. With your browser, go to:
