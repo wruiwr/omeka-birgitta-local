@@ -48,12 +48,17 @@ docker exec -i <database-container-ID> mysql -uomeka -pomeka omeka < birgitta.my
 
   * PhpMyAdmin: localhost:8080
 
-4. Stop containers:
+4. Dump and load Birgitta database from remote machine
+```
+sh database_dump_load_handler.sh
+```
+
+5. Stop containers:
 ```
 docker-compose down
 ```
 
-5. Stop containers and remove all images and volumes 
+6. Stop containers and remove all images and volumes 
 ```
 docker-compose down --rmi all
 ```
