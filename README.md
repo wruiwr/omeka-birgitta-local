@@ -35,6 +35,15 @@ Container 2: phpmyadmin (connected to container 1)
 Container 3: omeka-s-birgitta (connected to container 1)
 
 2. Automatically dump and load Birgitta database from remote machine
+
+Create a file: **birgitta_database_pass.txt** and put the password of Birgitta
+database in the file, such as ```'password'``` (it must has single quotes around
+the password).
+
+Then, run the shell script. It gets the password from
+**birgitta_database_pass.txt** file, dumps database, and imports to docker
+database container.
+
 ```
 sh database_dump_load_handler.sh
 ```
