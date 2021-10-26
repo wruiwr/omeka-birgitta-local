@@ -34,12 +34,9 @@ Container 2: phpmyadmin (connected to container 1)
 
 Container 3: omeka-s-birgitta (connected to container 1)
 
-2. import database:
-
-Eg:
-
+2. Automatically dump and load Birgitta database from remote machine
 ```
-docker exec -i <database-container-ID> mysql -uomeka -pomeka omeka < birgitta.mysqldump.sql
+sh database_dump_load_handler.sh
 ```
 
 3. With your browser, go to:
@@ -48,17 +45,12 @@ docker exec -i <database-container-ID> mysql -uomeka -pomeka omeka < birgitta.my
 
   * PhpMyAdmin: localhost:8080
 
-4. Dump and load Birgitta database from remote machine
-```
-sh database_dump_load_handler.sh
-```
-
-5. Stop containers:
+4. Stop containers:
 ```
 docker-compose down
 ```
 
-6. Stop containers and remove all images and volumes 
+5. Stop containers and remove all images and volumes 
 ```
 docker-compose down --rmi all
 ```
