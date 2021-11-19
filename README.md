@@ -1,91 +1,94 @@
-# Omeka S
+# Omeka S with Birgitta configured for running locally
 
-Omeka S is a web publication system for universities, galleries, libraries, archives, and museums. It consists of a local network of independently curated exhibits sharing a collaboratively built pool of items, media, and their metadata.
+## Clone and get submodules 
+1. clone the repo.
+2. to get submodules, run: 
+```
+git submodule init
+```
+```
+git submodule update
+```
 
-See the [user manual](https://omeka.org/s/docs/user-manual) for more information.
+## To use it with MEMP Pro
+1. clone the repo.
+2. in MEMP, choose localhost and change its Document Root (under General tab) to cloned repo directoy.
+3. under the Databases tap, create a database called "omeka". This database name is defined in **config/database.ini**. The user name and password of the database "omeka" is also defined in **config/database.ini**
+4. import database:
+```
+/Applications/MAMP/library/bin/mysql -uomeka -pomeka omeka < birgitta.mysqldump-new.sql
+```
+5. Click start and open localhost.
 
-## Installation
+## To use it with docker containers
+1. Launch the containers:
+```
+docker-compose up -d
+```
 
-### Requirements
-* Linux
-* [Apache](https://www.apache.org/) (with [AllowOverride](https://httpd.apache.org/docs/2.4/mod/core.html#allowoverride) set to "All" and [mod_rewrite](http://httpd.apache.org/docs/current/mod/mod_rewrite.html) enabled)
-* [MySQL](https://www.mysql.com/) 5.6.4+ (or [MariaDB](https://mariadb.org/) 10.0.5+)
-* [PHP](https://www.php.net/) 7.2+ (latest stable version preferred, with [PDO](http://php.net/manual/en/intro.pdo.php), [pdo_mysql](http://php.net/manual/en/ref.pdo-mysql.php), and [xml](http://php.net/manual/en/intro.xml.php) extensions installed)
+This will deploy three Docker containers:
 
-### Generating thumbnails
-* The default library for generating thumbnails is [ImageMagick](https://imagemagick.org/index.php), at least version 6.7.5. Older versions will not correctly produce thumbnails. For alternative thumbnail options, see the [user manual](https://omeka.org/s/docs/user-manual/configuration/#thumbnails).
+Container 1: mariadb (mysql)
 
-### Installing from GitHub
+Container 2: phpmyadmin (connected to container 1)
 
-1. Make sure [Node.js](https://nodejs.org/) and [npm](https://nodejs.org/) are installed
-1. Clone this repository in your Apache web directory:
-   * `$ git clone https://github.com/omeka/omeka-s.git`
-1. Change into the Omeka S directory:
-   * `$ cd omeka-s`
-1. Perform first-time setup:
-   * `$ npm install`
-   * `$ npx gulp init`
-1. Open `config/database.ini` and add your MySQL username, password, database name, and host name. The user and database must be created before this step.
-1. Make sure the `files/` directory is writable by Apache.
-1. In your web browser, navigate to the omeka-s directory, where you can complete installation.
+Container 3: omeka-s-birgitta (connected to container 1)
 
-### Installing from released zip file
+2. Automatically dump and load Birgitta database from remote machine
 
-1. Download the latest release from the [release page](https://github.com/omeka/omeka-s/releases) (download the first asset listed)
-1. Open `config/database.ini` and add your MySQL username, password, database name, and host name. The user and database must be created before this step.
-1. Make sure the `files/` directory is writable by Apache.
-1. In your web browser, navigate to the omeka-s directory, where you can complete installation.
+Create a file: **birgitta_database_pass.txt** and put the password of Birgitta
+database in the file, such as ```'password'``` (it must has single quotes around
+the password).
 
-You can find Omeka-specific code under `application/`.
+Then, run the shell script. It gets the password from
+**birgitta_database_pass.txt** file, dumps database, and imports to docker
+database container.
 
-## Updating
+```
+sh database_dump_load_handler.sh
+```
 
-*Make a backup copy of your entire site and its database!*
+3. With your browser, go to:
 
-### Updating from GitHub
+  * Omeka-S: localhost
 
-1. `git pull` as usual. Use the `master` branch for the latest releases.
-2. From the Omeka S root directory, run `npx gulp deps` to make sure dependencies are up to date.
-3. Compare changes in `/config/local.config.php` and `/config/local.config.php.dist`. Some default configurations might have changed, so you might need to reconcile changes to the distributed configuration with your local configuration (e.g., a path to PHP specific to your server, dev mode settings, etc.)
-4. In your web browser, go to your site and run any migrations that are needed.
+  * PhpMyAdmin: localhost:8080
 
-### Updating from released zip file
-1. Download the latest release from the [release page](https://github.com/omeka/omeka-s/releases)
-2. Make a copy of your `/config` directory. You will need to restore your `local.config.php` and `database.ini` files from that copy.
-3. Make a copy of your `/modules` and `/themes` directories.
-4. Make a copy of your `/files` directory.
-5. Remove all Omeka S files, and replace them with the files from the updated zip file.
-6. Replace your original `/config/local.config.php` file, and the `/modules`, `/themes`, and `/files` directories that you copied.
-7. In your web browser, go to your site and run any migrations that are needed.
+4. Stop containers:
+```
+docker-compose down
+```
 
-## Creating a zipped release
+5. Stop containers and remove all images and volumes 
+```
+docker-compose down --rmi all
+```
+and 
+```
+docker volume prune
+```
 
-Run `npx gulp zip` to create a zipped version of Omeka S and store it in `/build`. Use the `--no-dev` flag to omit Composer dev dependencies for a smaller package suitable for end-users. Official releases follow this same process from a new, clean checkout.
+## Build your birgitta image (optional)
+If you want to modify and build the omeka birgitta image, you will need to build a new image:
 
-## Libraries
+eg:
+```
+docker image build -t foo/omeka-s-birgitta:1.0.1 .
+```
+```
+docker image tag foo/omeka-s-birgitta:1.0.1 foo/omeka-s-birgitta:latest
+```
 
-Omeka uses the following libraries, among others:
+Upload your image to your Docker hub repository:
 
-* [Laminas](https://getlaminas.org/)
-* [Doctrine 2](http://www.doctrine-project.org/)
-* [EasyRdf](http://www.easyrdf.org/)
-* [PHPUnit](https://phpunit.de/)
-* [jQuery](http://jquery.com/)
+Login in your account (e.g. foo) on hub.docker.com, and create a repository "omeka-s-birgitta", then upload your customized image:
 
-## Development Standards
-
-Omeka development adheres to the [Laminas Coding Style Guide](https://docs.laminas.dev/laminas-coding-standard/v2/coding-style-guide/) and uses the [git-flow](http://nvie.com/posts/a-successful-git-branching-model/) branching model and the [Semantic Versioning 2.0.0](https:/semver.org/spec/v2.0.0.html) version scheme.
-
-See the [developer documentation](https://omeka.org/s/docs/developer/) for more information.
-
-# Copyright
-
-Omeka is Copyright © 2015-present Corporation for Digital Scholarship, Vienna, Virginia, USA http://digitalscholar.org
-
-The Corporation for Digital Scholarship distributes the Omeka source code under the GNU General Public License, version 3 (GPLv3). The full text of this license is given in the license file.
-
-The Omeka name is a registered trademark of the Corporation for Digital Scholarship.
-
-Third-party copyright in this distribution is noted where applicable.
-
-All rights not expressly granted are reserved.
+```
+docker login --username=foo
+```
+```
+docker image push foo/omeka-s-birgitta:1.0.1
+```
+```
+docker image push foo/omeka-s-birgitta:latest
+```
