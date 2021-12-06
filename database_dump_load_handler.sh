@@ -8,7 +8,7 @@ set +H
 PASSWD=$(<birgitta_database_pass.txt)
 
 # Birgitta remote machine
-BIRGITTA_REMOTE="centos@158.39.75.92"
+BIRGITTA_REMOTE="centos@158.39.74.69"
 
 # Set home path on Birgitta remote machine
 HOME_PATH="/home/centos/"
