@@ -68,7 +68,13 @@ and
 docker volume prune
 ```
 
-## Build your birgitta image (optional)
+To further remove all stopped containers, not used networks and images, and all cache:
+
+```
+docker system prune -a
+```
+
+## Build your own birgitta image and push it to docker hub (optional)
 If you want to modify and build the omeka birgitta image, you will need to build a new image:
 
 eg:
