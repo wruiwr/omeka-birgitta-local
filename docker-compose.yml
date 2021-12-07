@@ -30,7 +30,8 @@ services:
   omeka:
     depends_on:
       - mariadb
-    image: wruiwr/omeka-s-birgitta:latest
+    # image: wruiwr/omeka-s-birgitta:latest
+    build: .
     restart: always
     networks:
       - network_birgitta
