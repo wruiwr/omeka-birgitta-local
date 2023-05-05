@@ -20,7 +20,7 @@ git submodule update
 ```
 5. Click start and open localhost.
 
-## To use it with docker containers
+## To use it with docker containers (recommand)
 1. Launch the containers:
 ```
 docker-compose up -d
