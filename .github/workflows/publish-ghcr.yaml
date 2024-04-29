@@ -6,6 +6,7 @@ on:
 permissions:
   contents: read
   packages: write
+  id-token: write
 
 jobs:
   build_and_publish:
@@ -15,7 +16,7 @@ jobs:
       - name: build and push the image
         run: | 
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin 
-          docker build . --tag ghcr.io/wruiwr/omeka-s-birgitta:latest
-          docker push ghcr.io/wruiwr/omeka-s-birgitta:latest
+          docker build . --tag ghcr.io/${{ github.repository_owner }}/omeka-s-birgitta:latest
+          docker push ghcr.io/${{ github.repository_owner }}/omeka-s-birgitta:latest
           
       
