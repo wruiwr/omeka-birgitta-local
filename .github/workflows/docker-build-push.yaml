@@ -1,6 +1,6 @@
 name: Manually Build and Push Docker Image
-on:
-  workflow_dispatch: # run manually
+
+on: [workflow_dispatch] # run manually
   #  inputs:
   #    tag:
   #      description: 'Docker image tag'
