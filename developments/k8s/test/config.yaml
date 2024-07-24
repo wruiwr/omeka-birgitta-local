@@ -4,6 +4,6 @@ metadata:
   name: hono-api-config
 data:
   namespace: "test"
-  prod_url: "https://api.ub.uib.no"
+  test_url: "https://api.ub.uib.no"
   port: "3009"
   api_url: "http://localhost"
