@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hono-api
+  labels:
+    app: hono-api
+spec:
+  selector:
+    matchLabels:
+      app: hono-api
+  template:
+    spec:
+      containers:
+        - name: hono-api
+          image: wruiwr/ub-hono-api:latest
+          env:
+            - name: NAMESPACE
+              valueFrom:
+                configMapKeyRef: 
+                  name: hono-api-config
+                  key: namespace
+            - name: NODE_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: hono-api-config
+                  key: node_env
+            - name: ES_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: hono-api-config
+                  key: es_host
+          ports:
+            - containerPort: 3009
